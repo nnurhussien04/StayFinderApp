@@ -15,11 +15,11 @@ class _HotelAppState extends State<HotelApp> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => Hotel(null,null,null,null,null),
+      create: (context) => Hotel(), 
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          appBar: Hotelbar(),
+          appBar: Hotelbar(switchedPage: false),
           body: Homepage()
          )
       ),

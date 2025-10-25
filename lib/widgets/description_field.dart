@@ -17,7 +17,7 @@ class DescriptionField extends StatelessWidget {
           padding: EdgeInsets.only(left: leftValue, right: rightValue),
           child: Icon(icon),
         ),
-        Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(name, style: TextStyle(fontWeight: FontWeight.w600)),
       ],
     );
   }

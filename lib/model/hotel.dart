@@ -5,7 +5,7 @@ import 'package:stayfinderapp/screen/booking_page.dart';
 
 class Hotel extends ChangeNotifier{
 
-  Hotel(this.name,this.image,this.city,this.checkIn,this.checkOut):booked = false;
+  Hotel({this.name,this.image,this.city,this.checkIn,this.checkOut}):booked = false;
 
   String? name;
   String? city;
@@ -14,11 +14,5 @@ class Hotel extends ChangeNotifier{
   String? image;
   bool? booked;
 
-  void updateBooking(String username) {
-    //booked = !booked!;
-    //Consumer(builder: (context,user,_) => BookingPage());
-    name = username;
-    notifyListeners();
-  }
 
 }

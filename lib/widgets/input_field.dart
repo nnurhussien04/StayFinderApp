@@ -25,7 +25,7 @@ class _InputFieldsState extends State<InputFields> {
         shape: BoxShape.rectangle,
         border: Border.all(
           width: 1.0,
-          color: colorChange ? Colors.blue : Colors.black
+          color: colorChange ? Colors.blue : Colors.black12
           ),
         borderRadius: BorderRadius.circular(20),
       ),

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-class DatePickerButton extends StatelessWidget {
-  const DatePickerButton({super.key});
+class DatePickerButton extends StatefulWidget {
+  const DatePickerButton({
+    super.key,
+    required this.datePicker
+  });
 
-  Future<void> datePicker(BuildContext context) async {
-    DateTime? inputDate = await showDatePicker(
-      context: context,
-      firstDate: DateTime.parse('13/10/24'),
-      lastDate: DateTime.parse('13/10/25'),
-      initialDate: DateTime.parse('13/10/25'),
-    );
-  }
+  final void Function() datePicker;
+
+  @override
+  State<DatePickerButton> createState() => _DatePickerButtonState();
+}
+
+class _DatePickerButtonState extends State<DatePickerButton> {
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +24,7 @@ class DatePickerButton extends StatelessWidget {
       ),
       width: double.infinity,
       child: OutlinedButton.icon(
-        onPressed: () {
-          datePicker(context);
-        },
+        onPressed: widget.datePicker,
         icon: Padding(
           padding: EdgeInsets.only(right: 10),
           child: Icon(
@@ -44,10 +44,14 @@ class DatePickerButton extends StatelessWidget {
           iconAlignment: IconAlignment.start,
           padding: EdgeInsets.all(15),
           backgroundColor: Colors.transparent,
-          foregroundColor: Colors.grey,
+          foregroundColor: Colors.grey.shade700,
+          side: BorderSide(
+            color: Colors.black12
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
+          
         ),
       ),
     );
