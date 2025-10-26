@@ -4,6 +4,13 @@ import 'package:stayfinderapp/hotel_app.dart';
 import 'package:stayfinderapp/screen/booking_page.dart';
 import 'package:stayfinderapp/screen/homepage.dart';
 
+enum CurrentPage{
+  search,
+  home,
+  booking
+  
+}
+
 class Hotelbar extends StatefulWidget implements PreferredSizeWidget{
   Hotelbar({super.key,required this.switchedPage});
 
@@ -51,7 +58,7 @@ class _HotelbarState extends State<Hotelbar> {
             Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => HotelApp()));
           },
           style: TextButton.styleFrom(
-            backgroundColor: !widget.switchedPage ? Colors.lightBlue : Colors.white,
+            backgroundColor: widget.switchedPage != CurrentPage.home ?  Colors.white: Colors.lightBlue,
             //padding: EdgeInsets.symmetric(horizontal: 20),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15)
@@ -60,7 +67,7 @@ class _HotelbarState extends State<Hotelbar> {
           child: Text(
             'Search',
             style: TextStyle(
-              color: !widget.switchedPage ? Colors.white : Colors.black
+              color: widget.switchedPage != CurrentPage.home ? Colors.black : Colors.white
             ),
           )
         ),
@@ -83,8 +90,8 @@ class _HotelbarState extends State<Hotelbar> {
               label: Text(
                 'My Booking'), 
               style: TextButton.styleFrom(
-                backgroundColor: !widget.switchedPage ? Colors.white : Colors.lightBlue,
-                foregroundColor: !widget.switchedPage ? Colors.black : Colors.white,
+                backgroundColor: widget.switchedPage != CurrentPage.booking ? Colors.white : Colors.lightBlue,
+                foregroundColor: widget.switchedPage != CurrentPage.booking ? Colors.black : Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)
                 )

@@ -19,7 +19,7 @@ class _HotelAppState extends State<HotelApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          appBar: Hotelbar(switchedPage: false),
+          appBar: Hotelbar(switchedPage: CurrentPage.home),
           body: Homepage()
          )
       ),

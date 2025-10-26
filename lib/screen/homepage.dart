@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stayfinderapp/model/hotel.dart';
 import 'package:stayfinderapp/screen/booking_page.dart';
+import 'package:stayfinderapp/screen/search_page.dart';
 import 'package:stayfinderapp/widgets/date_button.dart';
 import 'package:stayfinderapp/widgets/description_field.dart';
 import 'package:stayfinderapp/widgets/input_field.dart';
@@ -25,6 +26,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   void dispose() {
+    super.dispose();
     // TODO: implement dispose
     _controller.dispose();
   }
@@ -123,7 +125,7 @@ class _HomepageState extends State<Homepage> {
                     ),
                     InputFields(
                       controller: _controller,
-                      hint:  'Where are you going',
+                      hint: 'Where are you going',
                     ),
                     SizedBox(height: 10),
                     DescriptionField(
@@ -159,6 +161,8 @@ class _HomepageState extends State<Homepage> {
                       width: double.infinity,
                       child: TextButton.icon(
                         onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(context,MaterialPageRoute(builder: (ctx) => SearchPage()));
                           //hotelProvider.updateBooking(_controller.text);
                         },
                         icon: Icon(Icons.search),

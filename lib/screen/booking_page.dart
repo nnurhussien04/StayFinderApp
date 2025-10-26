@@ -18,12 +18,12 @@ class BookingPage extends StatelessWidget {
         children: [
           Icon(Icons.calendar_today_outlined,size: 50),
           Text('No Booking Found, Start Booking',style: TextStyle(fontSize: 30),textAlign: TextAlign.center,)
-        ],
-      ),
-    );
+          ],
+        ),
+      );
 
     return Scaffold(
-      appBar: Hotelbar(switchedPage: true),
+      appBar: Hotelbar(switchedPage: CurrentPage.booking),
       body: content
     );
 
