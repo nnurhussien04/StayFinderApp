@@ -5,6 +5,10 @@ class SearchCard extends StatelessWidget {
   SearchCard({super.key,required this.hotel});
   final Hotel hotel;
 
+  void getSelectedHotel(){
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(

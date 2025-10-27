@@ -7,8 +7,8 @@ import 'package:stayfinderapp/screen/homepage.dart';
 enum CurrentPage{
   search,
   home,
-  booking
-  
+  booking,
+  info
 }
 
 class Hotelbar extends StatefulWidget implements PreferredSizeWidget{
@@ -75,8 +75,6 @@ class _HotelbarState extends State<Hotelbar> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            height: 100,
-            width: 130,
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(10)
