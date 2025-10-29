@@ -5,14 +5,14 @@ import 'package:stayfinderapp/screen/booking_page.dart';
 
 class Hotel extends ChangeNotifier{
 
-  Hotel({this.name,this.image,this.city,this.checkIn,this.checkOut}):booked = false;
+  Hotel({this.name,this.image,this.city,this.checkIn,this.checkOut,this.price});
 
   String? name;
   String? city;
   DateTime? checkIn;
   DateTime? checkOut;
   String? image;
-  bool? booked;
+  double? price;
 
 
 }

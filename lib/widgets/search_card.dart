@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stayfinderapp/model/hotel.dart';
+import 'package:stayfinderapp/provider/current_hotel.dart';
+import 'package:stayfinderapp/screen/info_page.dart';
+import 'package:stayfinderapp/screen/search_page.dart';
 
 class SearchCard extends StatelessWidget {
   SearchCard({super.key,required this.hotel});
@@ -11,6 +15,8 @@ class SearchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var currentHotel = Provider.of<CurrentHotel>(context);
+
     return Card(
       clipBehavior: Clip.hardEdge,
       margin: EdgeInsets.all(8),
@@ -96,7 +102,11 @@ class SearchCard extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 TextButton(
-                  onPressed: (){}, 
+                  onPressed: (){
+                    currentHotel.setHotel(hotel);
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (ctx) => InfoPage()));
+                  }, 
                   style: TextButton.styleFrom(
                     minimumSize: Size(double.infinity,40),
                     shape: RoundedRectangleBorder(

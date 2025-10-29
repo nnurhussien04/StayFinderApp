@@ -2,20 +2,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stayfinderapp/model/hotel.dart';
 
-class FavouriteHotel extends ChangeNotifier{
-  FavouriteHotel();
+class BookingHotel extends ChangeNotifier{
+  BookingHotel();
 
-  List<Hotel> favourites = [];
+  List<Hotel> booking = [];
 
   void addHotel(Hotel hotel){
-    hotel.booked = true;
-    favourites.add(hotel);
+    booking.add(hotel);
     notifyListeners();
   }
 
   void removeHotel(Hotel hotel){
-    hotel.booked = false;
-    favourites.remove(hotel);
+    booking.remove(hotel);
     notifyListeners();
   }
 

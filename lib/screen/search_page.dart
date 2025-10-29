@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:stayfinderapp/provider/current_hotel.dart';
 import 'package:stayfinderapp/widgets/hotelbar.dart';
 import 'package:stayfinderapp/data/hotels.dart';
 import 'package:stayfinderapp/widgets/search_card.dart';

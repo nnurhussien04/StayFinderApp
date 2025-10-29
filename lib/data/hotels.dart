@@ -7,6 +7,7 @@ final avaliableHotels = [
     city: 'Miami',
     checkIn: DateTime(2025, 11, 5),
     checkOut: DateTime(2025, 11, 10),
+    price: 120
   ),
   Hotel(
     name: 'Symmetrical Hotel',
@@ -14,6 +15,7 @@ final avaliableHotels = [
     city: 'Vancouver',
     checkIn: DateTime(2025, 12, 1),
     checkOut: DateTime(2025, 12, 5),
+    price: 100
   ),
   Hotel(
     name: 'Salzburg Stay',
@@ -21,6 +23,7 @@ final avaliableHotels = [
     city: 'Salzburg',
     checkIn: DateTime(2025, 11, 20),
     checkOut: DateTime(2025, 11, 25),
+    price: 150
   ),
   // Hotel(
   //   name: 'Sun Resort',
