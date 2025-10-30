@@ -33,12 +33,12 @@ class _InputFieldsState extends State<InputFields> {
         controller: widget.controller,
         onTap: (){
           setState(() {
-            colorChange = !colorChange;
+            colorChange = true;
           });
         },
         onTapOutside: (value){
           setState(() {
-            colorChange = !colorChange;
+            colorChange = false;
           });
         },
         decoration: InputDecoration(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stayfinderapp/model/hotel.dart';
 import 'package:stayfinderapp/provider/current_hotel.dart';
 import 'package:stayfinderapp/widgets/amenties_widget.dart';
 import 'package:stayfinderapp/widgets/hotelbar.dart';
@@ -117,7 +118,98 @@ class InfoPage extends StatelessWidget {
                           SizedBox(height: 10),
                           TextButton(
                           onPressed: () {
-
+                              showDialog(
+                                context: context,
+                                builder: (ctx){
+                                  return AlertDialog(
+                                    backgroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)
+                                    ),
+                                    titlePadding: EdgeInsets.fromLTRB(24,10,15,10),
+                                    title: 
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 8.0),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text('Confirm Your Booking',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold)),
+                                                  Text('You\'re about to book a stay at ${hotelProvider.currentHotel!.name}',style: TextStyle(fontSize: 15,color: Colors.black87),)
+                                                ],
+                                              ),
+                                            ),
+                                            Spacer(),
+                                            IconButton(onPressed: () => Navigator.pop(ctx), icon: Icon(Icons.close),alignment: Alignment.topRight,iconSize: 15,padding: EdgeInsets.zero),
+                                          ],
+                                        ),
+                                    insetPadding: EdgeInsets.zero,
+                                    content: Container(
+                                      width: 330,
+                                      height: 100,
+                                      child: Column(
+                                        children: [
+                                          DialogRow(
+                                            detail: 'Hotel',
+                                            data: hotelProvider.currentHotel!.name!
+                                          ),
+                                          SizedBox(height: 15),
+                                          DialogRow(
+                                            detail: 'Duration', 
+                                            data: '3 nights'
+                                          ),
+                                          SizedBox(height: 15),
+                                          DialogRow(
+                                            detail: 'Total Price',
+                                            data: '£500',
+                                            sizeFont: 18,
+                                          )
+                                          //Text('Testing Dialog'),
+                                        ],
+                                      )),
+                                    actions: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(ctx),
+                                              style: TextButton.styleFrom(
+                                                //padding: EdgeInsets.all(15),
+                                                //fixedSize: Size(140, 35),
+                                                foregroundColor: Colors.black,
+                                                backgroundColor: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  side: BorderSide(
+                                                    color: Colors.black26,
+                                                    width: 1.0
+                                                  ),
+                                                  borderRadius: BorderRadius.circular(15),
+                                                ),
+                                              ), 
+                                              child: Text('Cancel')                                              
+                                            ),
+                                            SizedBox(width: 5),
+                                            TextButton(
+                                              onPressed: (){},
+                                              style: TextButton.styleFrom(
+                                                //padding: EdgeInsets.all(15),
+                                                fixedSize: Size(145, 35),
+                                                backgroundColor: Colors.lightBlue,
+                                                foregroundColor: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(15),
+                                                ),
+                                              ), 
+                                              child: Text('Confirm Booking',style: TextStyle(fontWeight: FontWeight.bold),)                                      
+                                            )
+                                          ]
+                                        )
+                                    ],
+                                  );
+                                });
                           },
                           style: TextButton.styleFrom(
                             minimumSize: Size(double.infinity,10),
@@ -141,6 +233,31 @@ class InfoPage extends StatelessWidget {
           );
       }
       ),
+    );
+  }
+}
+
+class DialogRow extends StatelessWidget {
+  DialogRow({
+    super.key,
+    required this.detail,
+    required this.data,
+    this.sizeFont = 14
+  });
+
+  String detail;
+  String data;
+  double sizeFont;
+  
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(detail),
+        Spacer(),
+        Text(data,style: TextStyle(fontWeight: FontWeight.bold,fontSize: sizeFont))
+      ],
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stayfinderapp/model/hotel.dart';
+import 'package:stayfinderapp/provider/search_result.dart';
 import 'package:stayfinderapp/screen/booking_page.dart';
 import 'package:stayfinderapp/screen/search_page.dart';
 import 'package:stayfinderapp/widgets/date_button.dart';
@@ -17,11 +18,15 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   late TextEditingController _controller;
+  late TextEditingController _guestController;
+  DateTime? checkInDate;
+  DateTime? checkOutDate;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    _guestController = TextEditingController();
   }
 
   @override
@@ -29,16 +34,23 @@ class _HomepageState extends State<Homepage> {
     super.dispose();
     // TODO: implement dispose
     _controller.dispose();
+    _guestController.dispose();
   }
 
   var kColorScheme = ColorScheme.fromSeed(seedColor: Colors.blue);
 
   Future<void> _datePicker() async {
-    DateTime? inputDate = await showDatePicker(
+        DateTime? selectedDate;
+
+      if(checkInDate != null){
+        selectedDate = DateTime(checkInDate!.year,checkInDate!.month,checkInDate!.day);
+      }
+
+     checkInDate = await showDatePicker(
       context: context,
-      firstDate: DateTime(DateTime.now().year-1,DateTime.now().month, DateTime.now().day),
-      lastDate: DateTime.now(),
-      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(DateTime.now().year,DateTime.now().month+6, DateTime.now().day),
+      initialDate: selectedDate ?? DateTime.now(),
       builder: (ctx,child){
         return Theme(
           data: Theme.of(context).copyWith(
@@ -55,11 +67,24 @@ class _HomepageState extends State<Homepage> {
 
 
   Future<void> _datePicker2() async {
-    DateTime? inputDate = await showDatePicker(
+    late DateTime latestDate;
+    DateTime? selectedDate;
+
+    if(checkInDate == null){
+      latestDate = DateTime(DateTime.now().year,DateTime.now().month+6,DateTime.now().day);
+    } else{
+       latestDate = DateTime(checkInDate!.year,checkInDate!.month+6,checkInDate!.day);
+    }
+
+    if(checkOutDate != null){
+      selectedDate = checkOutDate;
+    }
+
+    checkOutDate = await showDatePicker(
       context: context,
-      firstDate: DateTime(DateTime.now().year-1,DateTime.now().month, DateTime.now().day),
-      lastDate: DateTime.now(),
-      initialDate: DateTime.now(),
+      firstDate: checkInDate ?? DateTime.now(),
+      lastDate: latestDate,
+      initialDate: selectedDate ?? checkInDate,
       builder: (ctx,child){
         return Theme(
           data: Theme.of(context).copyWith(
@@ -75,6 +100,40 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
+  void validateInput(){
+    if(_controller.text.trim() == '' || _guestController.text.trim() == '' || checkInDate == null || checkOutDate == null){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          //showCloseIcon: true,
+          padding: EdgeInsets.all(24),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Missing Information',style: TextStyle(fontWeight: FontWeight.bold),),
+              Text('One of the values is Empty Try Again'),
+            ],
+          ),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10)
+          ),
+          //width: 50,
+        )
+      );
+    } else{
+      SearchResult searchProvider = Provider.of<SearchResult>(context,listen: false);
+      searchProvider.updateSearchResult(
+        userLocation: _controller.text,
+        noOfGuests: int.parse(_guestController.text),
+        userCheckInDate: checkInDate,
+        userCheckOutDate: checkOutDate
+      );
+      Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (ctx) => SearchPage()));
+    }
+  }
+
 
 
   @override
@@ -86,13 +145,14 @@ class _HomepageState extends State<Homepage> {
         //height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                padding: const EdgeInsets.only(top: 10),
                 child: Text(
                   'Find Your Perfect Stay',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold,letterSpacing: -1,height: 1.2),
                 ),
               ),
               Padding(
@@ -100,7 +160,7 @@ class _HomepageState extends State<Homepage> {
                 child: Text(
                   'Discover amazing hotels worldwide at the best prices',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, color: Colors.grey),
+                  style: TextStyle(fontSize: 20, color: Colors.black87),
                 ),
               ),
               SizedBox(height: 5),
@@ -134,7 +194,7 @@ class _HomepageState extends State<Homepage> {
                       rightValue: 1.0, 
                       icon: Icons.people),
                     InputFields(
-                      controller: _controller,
+                      controller: _guestController,
                       hint:  'Number of guests',
                     ),
                     SizedBox(height: 10),
@@ -160,11 +220,8 @@ class _HomepageState extends State<Homepage> {
                       ),
                       width: double.infinity,
                       child: TextButton.icon(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.push(context,MaterialPageRoute(builder: (ctx) => SearchPage()));
-                          //hotelProvider.updateBooking(_controller.text);
-                        },
+                        onPressed: validateInput,
+                         //hotelProvider.updateBooking(_controller.text)'
                         icon: Icon(Icons.search),
                         label: Text('Search Hotels'),
                         style: TextButton.styleFrom(
