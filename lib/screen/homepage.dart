@@ -101,7 +101,7 @@ class _HomepageState extends State<Homepage> {
   }
 
   void validateInput(){
-    if(_controller.text.trim() == '' || _guestController.text.trim() == '' || checkInDate == null || checkOutDate == null){
+    if(_controller.text.trim() == '' || _guestController.text.trim() == '' || checkInDate == null || checkOutDate == null || int.tryParse(_guestController.text) == null || int.tryParse(_guestController.text)! <= 0){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           //showCloseIcon: true,
@@ -110,7 +110,7 @@ class _HomepageState extends State<Homepage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Missing Information',style: TextStyle(fontWeight: FontWeight.bold),),
-              Text('One of the values is Empty Try Again'),
+              Text('One of the values is Empty or Invalid, Try Again'),
             ],
           ),
           backgroundColor: Colors.red,
@@ -185,7 +185,7 @@ class _HomepageState extends State<Homepage> {
                     ),
                     InputFields(
                       controller: _controller,
-                      hint: 'Where are you going',
+                      hint: 'Where are you going?',
                     ),
                     SizedBox(height: 10),
                     DescriptionField(

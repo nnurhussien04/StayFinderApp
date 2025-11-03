@@ -27,10 +27,11 @@ class _InputFieldsState extends State<InputFields> {
           width: 1.0,
           color: colorChange ? Colors.blue : Colors.black12
           ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: TextField(
         controller: widget.controller,
+        
         onTap: (){
           setState(() {
             colorChange = true;
@@ -42,9 +43,13 @@ class _InputFieldsState extends State<InputFields> {
           });
         },
         decoration: InputDecoration(
+          constraints: BoxConstraints(minHeight: 30,maxHeight: 40),
           border: InputBorder.none,
-          contentPadding: EdgeInsets.only(left: 20),
+          contentPadding: EdgeInsets.only(left: 20,top: -10),
           hintText: widget.hint,
+          hintStyle: TextStyle(
+            fontSize: 15
+          )
         ),
       ),
     );

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stayfinderapp/model/hotel.dart';
+import 'package:stayfinderapp/provider/booking.dart';
 import 'package:stayfinderapp/provider/current_hotel.dart';
+import 'package:stayfinderapp/provider/search_result.dart';
+import 'package:stayfinderapp/screen/booking_page.dart';
 import 'package:stayfinderapp/widgets/amenties_widget.dart';
 import 'package:stayfinderapp/widgets/hotelbar.dart';
 
@@ -10,10 +13,15 @@ class InfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SearchResult searchResult = Provider.of<SearchResult>(context,listen: false);                          
+    searchResult.calculateNoOfNights();
+
     return Scaffold(
       appBar: Hotelbar(switchedPage: CurrentPage.info),
       body: Consumer<CurrentHotel>(
         builder: (ctx,hotelProvider,_){
+          var hotelFee = ((hotelProvider.currentHotel!.price!*searchResult.guests!)*searchResult.noOfNights);
+          var finalFee = hotelFee + 25;
           return SafeArea(
             child: SingleChildScrollView(
               child: Container(
@@ -89,14 +97,14 @@ class InfoPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('£' + hotelProvider.currentHotel!.price!.toStringAsFixed(0),style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),),
+                          Text('£' + (hotelProvider.currentHotel!.price!).toStringAsFixed(0),style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),),
                           Text('per night',style: TextStyle(color: Colors.black26)),
                           SizedBox(height: 20,),
                           Row(
                             children: [
-                              Text('3 nights',style: TextStyle(color: Colors.black54)),
+                              Text('${searchResult.noOfNights} nights',style: TextStyle(color: Colors.black54)),
                               Spacer(),
-                              Text('£360',style: TextStyle(color: Colors.black54))
+                              Text('£' + hotelFee.toStringAsFixed(0),style: TextStyle(color: Colors.black54))
                             ],
                           ),
                           SizedBox(height: 5),
@@ -112,104 +120,111 @@ class InfoPage extends StatelessWidget {
                             children: [
                               Text('Total',style: TextStyle(fontWeight: FontWeight.bold)),
                               Spacer(),
-                              Text('£500',style: TextStyle(fontWeight: FontWeight.bold))
+                              Text('£${finalFee.toStringAsFixed(0)}',style: TextStyle(fontWeight: FontWeight.bold))
                             ]
                           ),
                           SizedBox(height: 10),
                           TextButton(
                           onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (ctx){
-                                  return AlertDialog(
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)
-                                    ),
-                                    titlePadding: EdgeInsets.fromLTRB(24,10,15,10),
-                                    title: 
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(top: 8.0),
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text('Confirm Your Booking',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold)),
-                                                  Text('You\'re about to book a stay at ${hotelProvider.currentHotel!.name}',style: TextStyle(fontSize: 15,color: Colors.black87),)
-                                                ],
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            IconButton(onPressed: () => Navigator.pop(ctx), icon: Icon(Icons.close),alignment: Alignment.topRight,iconSize: 15,padding: EdgeInsets.zero),
-                                          ],
-                                        ),
-                                    insetPadding: EdgeInsets.zero,
-                                    content: Container(
-                                      width: 330,
-                                      height: 100,
-                                      child: Column(
+                            showDialog(
+                              context: context,
+                              builder: (ctx){
+                                return AlertDialog(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)
+                                  ),
+                                  titlePadding: EdgeInsets.fromLTRB(24,10,8,10),
+                                  title: 
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          DialogRow(
-                                            detail: 'Hotel',
-                                            data: hotelProvider.currentHotel!.name!
-                                          ),
-                                          SizedBox(height: 15),
-                                          DialogRow(
-                                            detail: 'Duration', 
-                                            data: '3 nights'
-                                          ),
-                                          SizedBox(height: 15),
-                                          DialogRow(
-                                            detail: 'Total Price',
-                                            data: '£500',
-                                            sizeFont: 18,
-                                          )
-                                          //Text('Testing Dialog'),
-                                        ],
-                                      )),
-                                    actions: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            TextButton(
-                                              onPressed: () => Navigator.pop(ctx),
-                                              style: TextButton.styleFrom(
-                                                //padding: EdgeInsets.all(15),
-                                                //fixedSize: Size(140, 35),
-                                                foregroundColor: Colors.black,
-                                                backgroundColor: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                                    color: Colors.black26,
-                                                    width: 1.0
-                                                  ),
-                                                  borderRadius: BorderRadius.circular(15),
-                                                ),
-                                              ), 
-                                              child: Text('Cancel')                                              
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 8.0),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text('Confirm Your Booking',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold)),
+                                                Text('You\'re about to book a stay at ${hotelProvider.currentHotel!.name}',style: TextStyle(fontSize: 15,color: Colors.black87),overflow: TextOverflow.clip)
+                                              ],
                                             ),
-                                            SizedBox(width: 5),
-                                            TextButton(
-                                              onPressed: (){},
-                                              style: TextButton.styleFrom(
-                                                //padding: EdgeInsets.all(15),
-                                                fixedSize: Size(145, 35),
-                                                backgroundColor: Colors.lightBlue,
-                                                foregroundColor: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(15),
-                                                ),
-                                              ), 
-                                              child: Text('Confirm Booking',style: TextStyle(fontWeight: FontWeight.bold),)                                      
-                                            )
-                                          ]
+                                          ),
+                                          Spacer(),
+                                          IconButton(onPressed: () => Navigator.pop(ctx), icon: Icon(Icons.close),alignment: Alignment.topRight,iconSize: 15,padding: EdgeInsets.zero),
+                                        ],
+                                      ),
+                                  insetPadding: EdgeInsets.zero,
+                                  content: Container(
+                                    width: 330,
+                                    height: 100,
+                                    child: Column(
+                                      children: [
+                                        DialogRow(
+                                          detail: 'Hotel',
+                                          data: hotelProvider.currentHotel!.name!
+                                        ),
+                                        SizedBox(height: 15),
+                                        DialogRow(
+                                          detail: 'Duration', 
+                                          data: '${searchResult.noOfNights} nights'
+                                        ),
+                                        SizedBox(height: 15),
+                                        DialogRow(
+                                          detail: 'Total Price',
+                                          data: '£${finalFee.toStringAsFixed(0)}',
+                                          sizeFont: 18,
                                         )
-                                    ],
-                                  );
-                                });
+                                        //Text('Testing Dialog'),
+                                      ],
+                                    )),
+                                  actions: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(ctx),
+                                            style: TextButton.styleFrom(
+                                              //padding: EdgeInsets.all(15),
+                                              //fixedSize: Size(140, 35),
+                                              foregroundColor: Colors.black,
+                                              backgroundColor: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                side: BorderSide(
+                                                  color: Colors.black26,
+                                                  width: 1.0
+                                                ),
+                                                borderRadius: BorderRadius.circular(15),
+                                              ),
+                                            ), 
+                                            child: Text('Cancel')                                              
+                                          ),
+                                          SizedBox(width: 5),
+                                          TextButton(
+                                            onPressed: (){
+                                              Navigator.pop(ctx);
+                                              Navigator.push(context, MaterialPageRoute(builder: (ctx) => BookingPage()));
+                                              
+                                              BookingHotel bookingHotel = Provider.of<BookingHotel>(context,listen: false);
+                                              bookingHotel.addHotel(hotelProvider.currentHotel!,finalFee,context);
+                                              
+                                            },
+                                            style: TextButton.styleFrom(
+                                              //padding: EdgeInsets.all(15),
+                                              fixedSize: Size(145, 35),
+                                              backgroundColor: Colors.lightBlue,
+                                              foregroundColor: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(15),
+                                              ),
+                                            ), 
+                                            child: Text('Confirm Booking',style: TextStyle(fontWeight: FontWeight.bold),)                                      
+                                          )
+                                        ]
+                                      )
+                                  ],
+                                );
+                              });
                           },
                           style: TextButton.styleFrom(
                             minimumSize: Size(double.infinity,10),

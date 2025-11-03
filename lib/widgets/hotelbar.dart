@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stayfinderapp/hotel_app.dart';
 import 'package:stayfinderapp/screen/booking_page.dart';
@@ -32,9 +33,16 @@ class _HotelbarState extends State<Hotelbar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      shape: Border.symmetric(horizontal: BorderSide(
+        color: Colors.black12,
+        width: 1.0,
+      )),
+      centerTitle: false,
+      surfaceTintColor: Colors.black,
+      bottomOpacity: 0,
       automaticallyImplyLeading: false,
       scrolledUnderElevation: 0.0,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       title: Row(
         children: [
           Icon(

@@ -26,30 +26,31 @@ class _DatePickerButtonState extends State<DatePickerButton> {
       child: OutlinedButton.icon(
         onPressed: widget.datePicker,
         icon: Padding(
-          padding: EdgeInsets.only(right: 10),
+          padding: EdgeInsets.only(right: 5,left: 5),
           child: Icon(
-            Icons.calendar_month,
+            Icons.calendar_today_outlined,
             size: 17,
             ),
         ),
         label: Text(
           'Pick a date',
            style: TextStyle(
-            fontSize: 17,
+            fontSize: 14,
             fontWeight: FontWeight.normal
            ),
           ),
         style: OutlinedButton.styleFrom(
+          fixedSize: Size(double.infinity, 40),
           alignment: Alignment.bottomLeft,
           iconAlignment: IconAlignment.start,
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.all(10),
           backgroundColor: Colors.transparent,
           foregroundColor: Colors.grey.shade700,
           side: BorderSide(
             color: Colors.black12
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(15),
           ),
           
         ),

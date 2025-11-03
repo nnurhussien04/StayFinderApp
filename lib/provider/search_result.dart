@@ -8,6 +8,7 @@ class SearchResult extends ChangeNotifier{
   DateTime? checkInDate;
   DateTime? checkOutDate;
   int noOfNights = 0;
+  double? price;
   
 
   void updateSearchResult({String? userLocation, int? noOfGuests, DateTime? userCheckInDate, DateTime? userCheckOutDate}){
@@ -28,6 +29,9 @@ class SearchResult extends ChangeNotifier{
     noOfNights = checkOutDate!.difference(checkInDate!).inDays;
     ChangeNotifier();
   }
+
+
+
 
 
 
